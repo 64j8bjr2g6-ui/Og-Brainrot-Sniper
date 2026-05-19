@@ -1,5 +1,4 @@
-- OG Sniper - Toggle Button After First Load + Mobile Optimized
-
+-- OG Sniper Full Working Version
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
@@ -13,39 +12,13 @@ screenGui.ResetOnSpawn = false
 screenGui.Parent = playerGui
 
 local isMobile = UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled
-
 local mainFrame = nil
 local toggleButton = nil
 local currentSniper = nil
 local feedItems = {}
 local isSpawning = false
 
--- ====================== CREATE TOGGLE BUTTON (called later) ======================
-local function createToggleButton()
-    toggleButton = Instance.new("TextButton")
-    toggleButton.Size = UDim2.new(0, 60, 0, 60)
-    toggleButton.Position = UDim2.new(0, 20, 0.5, -30)
-    toggleButton.BackgroundColor3 = Color3.fromRGB(0, 255, 100)
-    toggleButton.Text = "🧠"
-    toggleButton.TextScaled = true
-    toggleButton.Font = Enum.Font.GothamBold
-    toggleButton.Parent = screenGui
-    Instance.new("UICorner", toggleButton).CornerRadius = UDim.new(1, 0)
-
-    toggleButton.MouseButton1Click:Connect(function()
-        if mainFrame and mainFrame.Parent then
-            mainFrame.Visible = not mainFrame.Visible
-        else
-            if currentSniper then
-                startActiveSniper(currentSniper)
-            else
-                createSelectionScreen()
-            end
-        end
-    end)
-end
-
--- ====================== LOADING SCREEN ======================
+-- Loading Screen
 local function createLoadingScreen(titleText, duration, onComplete)
     local loadFrame = Instance.new("Frame")
     loadFrame.Size = isMobile and UDim2.new(0.7, 0, 0.45, 0) or UDim2.new(0.45, 0, 0.35, 0)
@@ -90,10 +63,34 @@ local function createLoadingScreen(titleText, duration, onComplete)
     end)
 end
 
--- ====================== SELECTION SCREEN ======================
+-- Toggle Button
+local function createToggleButton()
+    toggleButton = Instance.new("TextButton")
+    toggleButton.Size = UDim2.new(0, 60, 0, 60)
+    toggleButton.Position = UDim2.new(0, 20, 0.5, -30)
+    toggleButton.BackgroundColor3 = Color3.fromRGB(0, 255, 100)
+    toggleButton.Text = "🧠"
+    toggleButton.TextScaled = true
+    toggleButton.Font = Enum.Font.GothamBold
+    toggleButton.Parent = screenGui
+    Instance.new("UICorner", toggleButton).CornerRadius = UDim.new(1, 0)
+
+    toggleButton.MouseButton1Click:Connect(function()
+        if mainFrame and mainFrame.Parent then
+            mainFrame.Visible = not mainFrame.Visible
+        else
+            if currentSniper then
+                startActiveSniper(currentSniper)
+            else
+                createSelectionScreen()
+            end
+        end
+    end)
+end
+
+-- Selection Screen
 function createSelectionScreen()
     if mainFrame then mainFrame:Destroy() end
-
     mainFrame = Instance.new("Frame")
     mainFrame.Size = isMobile and UDim2.new(0.9, 0, 0.85, 0) or UDim2.new(0.5, 0, 0.7, 0)
     mainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
@@ -135,10 +132,9 @@ function createSelectionScreen()
     end
 end
 
--- ====================== ACTIVE SNIPER ======================
+-- Active Sniper + Spawn (full)
 function startActiveSniper(sniperName)
     if mainFrame then mainFrame:Destroy() end
-
     mainFrame = Instance.new("Frame")
     mainFrame.Size = isMobile and UDim2.new(0.95, 0, 0.92, 0) or UDim2.new(0.7, 0, 0.85, 0)
     mainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
@@ -221,7 +217,6 @@ function startActiveSniper(sniperName)
     end)
 end
 
--- ====================== FAKE SPAWN ======================
 function addFakeSpawn(parent, sniperName)
     local itemName = string.gsub(sniperName, " Spawner Sniper", "")
     local usernames = {"SkibidiRizzler420", "OhioSigmaStealer69", "FanumTaxBrainrot", "GigaMeowlKing", "JohnPorkRizzGod", "StrawberryElephantL", "BrainrotSniperX"}
@@ -284,11 +279,10 @@ function addFakeSpawn(parent, sniperName)
     end
 end
 
--- ====================== START ======================
--- First loading screen (NO button yet)
+-- Start
 createLoadingScreen("Og Sniper Loading", 13, function()
-    createToggleButton()        -- ← Button appears here
+    createToggleButton()
     createSelectionScreen()
 end)
 
-print("OG Sniper loaded. Toggle button will appear after initial loading.")
+print("✅ OG Sniper Loaded Successfully!")
